@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/task  
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd  
+        http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+	<!-- 配置自动扫描的包 -->
+	<context:component-scan base-package="com.alltest.s1.*">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<!-- 导入资源文件 -->
+	<context:property-placeholder location="classpath:/db/db.properties" />
+	<!-- 启动spring定时器 -->
+	<task:annotation-driven />
+	
+	<bean id="propertyConfigurater" class="com.alltest.s1.property.ParseConstantProperty">
+		<property name="ignoreResourceNotFound" value="false"/>
+		<property name="locations">
+			<list>
+				<value>classpath:/prop/value.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="aspectBean" class="com.alltest.s1.springaop.aspect.TestAspect" />
+	<!-- 配置事物切点，并把切点和事物关联起来 -->
+	<aop:config>
+		<aop:aspect id="TestAspect" ref="aspectBean">
+			<!--配置com.spring.service包下所有类或接口的所有方法 -->
+			<aop:pointcut id="businessService"
+				expression="execution(* com.alltest.s1.springaop.service.*.*(..))" />
+			<aop:before pointcut-ref="businessService" method="doBefore" />
+			<aop:after pointcut-ref="businessService" method="doAfter" />
+			<aop:around pointcut-ref="businessService" method="doAround" />
+			<aop:after-throwing pointcut-ref="businessService"
+				method="doThrowing" throwing="ex" />
+		</aop:aspect>
+	</aop:config>
+
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<bean id="myInterceptor" class="com.alltest.s1.springaop.aspect.TestAnnotationAspect" />
+</beans> 
