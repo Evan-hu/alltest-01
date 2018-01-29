@@ -23,7 +23,13 @@ public class AOPServiceTest {
 	@Test
 	public void test() {
 		System.out.println(aopService.aopTest());
-		System.out.println(System.getProperty("machine"));
+		String [] strs = System.getenv().entrySet().toString().split(",");
+		System.out.println("\n");
+		System.out.println(System.getProperties().toString());
+		System.out.println("\n");
+		for (int i=0; i<strs.length; i++) {
+			System.out.println(strs[i]);
+		}
 	}
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.alltest.s1.springaop.aspect;
 
@@ -13,7 +13,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
- * 
+ *
  * @author Evan
  * @date 2018年1月11日 下午3:17:48
  */
