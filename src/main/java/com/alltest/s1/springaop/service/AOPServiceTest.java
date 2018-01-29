@@ -5,6 +5,8 @@ package com.alltest.s1.springaop.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,11 +19,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:/config/applicationContext.xml")
 public class AOPServiceTest {
+	private static final Logger logger = LoggerFactory.getLogger(AOPServiceTest.class);
+
 	@Autowired
 	private AOPService aopService;
 	
 	@Test
 	public void test() {
+		logger.info("test");
 		System.out.println(aopService.aopTest());
 		System.out.println(System.getProperty("machine"));
 	}
